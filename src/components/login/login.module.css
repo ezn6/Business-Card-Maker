@@ -30,7 +30,8 @@
   margin-bottom: 0.8em;
   padding: 0.8em 0 0.8em 0;
   cursor: pointer;
-  width: 25rem;
+  /* width: 25rem; */
+  width: 80%;
   background-color: transparent;
 }
 .loginBtn:hover {

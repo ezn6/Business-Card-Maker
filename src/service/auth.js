@@ -8,25 +8,24 @@ import {
 
 class Auth {
   constructor() {
-    this.providerGoogle = new GoogleAuthProvider();
     this.auth = getAuth();
+    this.providerGoogle = new GoogleAuthProvider();
     this.providerGithub = new GithubAuthProvider();
   }
 
-  async loginGoogle() {
-    try {
-      return await signInWithPopup(this.auth, this.providerGoogle);
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode);
-      console.log(errorMessage);
+  findMethod(method) {
+    switch (method) {
+      case 'google':
+        return this.providerGoogle;
+      case 'github':
+        return this.providerGithub;
     }
   }
 
-  async loginGithub() {
+  async login(method) {
+    const provider = this.findMethod(method);
     try {
-      return await signInWithPopup(this.auth, this.providerGithub);
+      return await signInWithPopup(this.auth, provider);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
