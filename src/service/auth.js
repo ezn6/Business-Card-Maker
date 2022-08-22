@@ -4,21 +4,24 @@ import {
   GoogleAuthProvider,
   GithubAuthProvider,
   signOut,
+  onAuthStateChanged,
 } from 'firebase/auth';
 
 class Auth {
-  constructor() {
-    this.auth = getAuth();
+  constructor(app) {
+    this.auth = getAuth(app);
     this.providerGoogle = new GoogleAuthProvider();
     this.providerGithub = new GithubAuthProvider();
   }
 
   findMethod(method) {
     switch (method) {
-      case 'google':
+      case 'Google':
         return this.providerGoogle;
-      case 'github':
+      case 'Github':
         return this.providerGithub;
+      default:
+        throw new Error(`not supported provider: ${method}`);
     }
   }
 
@@ -36,6 +39,10 @@ class Auth {
 
   async logout() {
     await signOut(this.auth);
+  }
+
+  onAuthChange(userCheck) {
+    onAuthStateChanged(this.auth, userCheck);
   }
 }
 

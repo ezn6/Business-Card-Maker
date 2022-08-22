@@ -1,25 +1,29 @@
-import React from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import Footer from '../footer/footer';
 import Header from '../header/header';
+import { useNavigate } from 'react-router-dom';
 
-const Maker = ({ auth, login, setLogin }) => {
+const Maker = ({ auth }) => {
   const navigate = useNavigate();
 
-  if (!login) {
-    return <Navigate to='/' />;
-  }
-
-  const onClick = () => {
-    navigate('/preview');
+  const onLogout = () => {
+    auth.logout().then(() => {
+      console.log('logout successful.');
+    });
   };
+
+  useEffect(() => {
+    auth.onAuthChange((user) => {
+      if (!user) {
+        navigate('/');
+      }
+    });
+  });
 
   return (
     <>
-      <Header auth={auth} login={login} setLogin={setLogin} />
+      <Header onLogout={onLogout} />
       <h2>Maker component</h2>
-      {/* 새로운 컴포넌트 추가해서 틀만 만들어보고 디자인 완성하기 */}
-      <button onClick={onClick}>preview로 이동</button>
       <Footer />
     </>
   );

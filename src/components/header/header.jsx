@@ -1,19 +1,12 @@
 import React from 'react';
 import styles from './header.module.css';
 
-const Header = ({ auth, login, setLogin }) => {
-  const logout = () => {
-    auth.logout().then(() => {
-      console.log('logout successful.');
-      setLogin(false);
-    });
-  };
-
+const Header = ({ onLogout }) => {
   return (
     <div className={styles.header}>
       <img className={styles.img} src='./images/logo.png' alt='logo' />
-      {login && (
-        <button className={styles.btn} onClick={logout}>
+      {onLogout && (
+        <button className={styles.btn} onClick={onLogout}>
           Logout
         </button>
       )}

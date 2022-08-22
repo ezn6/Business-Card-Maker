@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import firebaseApp from './service/firebase';
 import Auth from './service/auth';
 
-const auth = new Auth();
+const auth = new Auth(firebaseApp);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

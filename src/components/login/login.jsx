@@ -1,41 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import styles from './login.module.css';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({ auth, login, setLogin }) => {
+const Login = ({ auth }) => {
   const navigate = useNavigate();
 
   const onLogin = (e) => {
-    const method = e.target.getAttribute('data-method');
+    const method = e.currentTarget.textContent;
     console.log(method);
     auth.login(method).then((result) => {
       const user = result.user;
-      console.log(user.uid);
-      setLogin(true);
-      navigate('/maker');
-      //로그인 중간에 창을 꺼버리면 나오는 프로미스 오류 해결하기
+      navigate('/maker', { state: { userId: user.uid } });
     });
   };
 
+  useEffect(() => {
+    auth.onAuthChange((user) => {
+      if (user) {
+        navigate('/maker', { state: { userId: user.uid } });
+      }
+    });
+  });
+
   return (
     <div className={styles.layout}>
-      <Header auth={auth} login={login} setLogin={setLogin} />
+      <Header />
       <section className={styles.section}>
         <h2 className={styles.title}>Login</h2>
-        <button
-          className={styles.loginBtn}
-          onClick={onLogin}
-          data-method='google'
-        >
+        <button className={styles.loginBtn} onClick={onLogin}>
           Google
         </button>
-        <button
-          className={styles.loginBtn}
-          onClick={onLogin}
-          data-method='github'
-        >
+        <button className={styles.loginBtn} onClick={onLogin}>
           Github
         </button>
       </section>
